@@ -29,12 +29,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build Alpha APKs
+      - name: Build Alpha APKs (unsigned)
         run: |
-          ./gradlew assembleArm64-v8aAlphaRelease assembleArmeabi-v7aAlphaRelease assembleX86AlphaRelease assembleX86_64AlphaRelease --daemon --parallel
+          ./gradlew assembleArm64-v8aAlphaDebug assembleArmeabi-v7aAlphaDebug assembleX86AlphaDebug assembleX86_64AlphaDebug --daemon --parallel
 
       - name: Move APKs
-        run: find . -type f -path '*/build/outputs/apk/*/release/*.apk' -exec mv {} . \;
+        run: find . -type f -path '*/build/outputs/apk/*/debug/*.apk' -exec mv {} . \;
 
       - name: List APKs
         run: ls -lh *.apk
