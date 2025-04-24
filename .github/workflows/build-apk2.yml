@@ -1,8 +1,8 @@
 name: Build APK
 
 on:
-  workflow_dispatch: # Запуск вручную
-  push: # Автоматический запуск при пуше в main
+  workflow_dispatch:
+  push:
     branches:
       - main
 
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: source
+        working-directory: source-next
 
     timeout-minutes: 30
 
@@ -29,9 +29,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
+      - name: Clean build
+        run: ./gradlew clean
+
       - name: Build Alpha APKs (unsigned)
-        run: |
-          ./gradlew assembleArm64-v8aAlphaDebug assembleArmeabi-v7aAlphaDebug assembleX86AlphaDebug assembleX86_64AlphaDebug --daemon --parallel
+        run: ./gradlew assembleArm64-v8aAlphaDebug assembleArmeabi-v7aAlphaDebug assembleX86AlphaDebug assembleX86_64AlphaDebug --daemon --parallel
 
       - name: Move APKs
         run: find . -type f -path '*/build/outputs/apk/*/debug/*.apk' -exec mv {} . \;
@@ -43,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Alpha-APKs
-          path: source/*.apk
+          path: source-next/*.apk
