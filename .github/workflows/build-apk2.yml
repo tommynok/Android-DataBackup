@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew assembleDebug --daemon --parallel
 
       - name: Move APKs
-        run: find . -type f -path '*/build/outputs/apk/*/debug/*.apk' -exec mv {} . \;
+        run: find ./app/build/outputs/apk/debug/ -type f -name '*.apk' -exec mv {} . \;
 
       - name: List APKs
         run: ls -lh *.apk
